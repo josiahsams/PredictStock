@@ -1,0 +1,141 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" > -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
+    <title>Test Page</title>
+    <script src='/javascripts/jquery-3.3.1.min.js'></script>
+    <script src='/javascripts/angular.min.js'></script>
+    <script src='/javascripts/main.js'></script>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/javascripts/popper.min.js"></script>
+
+    <!-- <script src="/javascripts/bootstrap.min.js"></script> -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.min.js"></script> -->
+
+    <!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
+<style>
+.btn-block {
+    height: 100px;
+}
+</style>
+</head>
+
+<body ng-app="myApp">
+
+    <nav class="navbar navbar-dark bg-dark">
+      <span class="navbar-brand mb-0 h1">Predict Stock Movement for S&P 500 Index</span>
+      <span class="navbar-text" style='float: right'>IBM PowerAI</span>
+    </nav>
+
+    <br>
+    <div class="container">
+
+        <div ng-controller="myCtrl1 as c1">
+
+            <!-- <div class="container-fluid"> -->
+                <div class="row">
+                    <div class="col-xs-1 col-md-1">
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <button type="button" ng-click="getIndex(1)" class="btn btn-outline-warning btn-lg btn-block">Scenario 1</button>
+                    </div>
+                    <div class="col-xs-1 col-md-1">
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <button type="button" ng-click="getIndex(2)" class="btn btn-outline-success btn-lg btn-block">Scenario 2</button>
+                    </div>
+                    <div class="col-xs-1 col-md-1">
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <button type="button" ng-click="getIndex(3)" class="btn btn-outline-info btn-lg btn-block">Scenario 3</button>
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-xs-6 col-md-6">
+
+                        <div ng-show="c1.indexes.date != ''">
+                            <h4><span class="badge badge-warning"> Date: {{c1.indexes.date}} </span></h4>
+                            <table class="table table-striped table-hover">
+                              <thead >
+                                <tr>
+                                  <th scope="col">Index</th>
+                                  <th scope="col">1 Day Before</th>
+                                  <th scope="col">2 Days Before</th>
+                                  <th scope="col">3 Days Before</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr ng-repeat="item in c1.indexes.data" >
+                                    <td ng-repeat="(key, value) in item">
+                                    {{key}}
+                                    </td>
+                                    <td ng-repeat="(key, value) in item">
+                                        {{trunc(value[0])}}
+                                    </td>
+                                    <td ng-repeat="(key, value) in item">
+                                        {{trunc(value[1])}}
+                                    </td>
+                                    <td ng-repeat="(key, value) in item">
+                                        {{trunc(value[2])}}
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6">
+                        <br>
+                        <br>
+                        <form class="form-inline">
+                          <div class="form-group">
+                            <label for="inputDate">Date</label>&nbsp;
+                            <input class="form-control" type="date" ng-model="c1.indexes.ldate" value="{{c1.indexes.ldate}}" id="example-date-input">
+                            &nbsp;
+                            <small id="HelpInline" class="text-muted">
+                              Select Market Working Date
+                            </small>
+                            <br><br>
+                            <button type="button" ng-disabled="isDisabled" ng-click="disableButton()"
+                                class="btn btn-primary btn-lg btn-block" style="height: 50px;">Predict &nbsp;
+                                <span ng-show="searchButtonText == 'searching'"><i class="fas fa-spinner"></i></span></button>
+                          </div>
+                        </form>
+                        <div class="row justify-content-md-center">
+                            <div class="card " style="width: 10rem;">
+                              <img class="card-img-top" src="/images/thumbsup.png" alt="Card image cap">
+                              <div class="card-body">
+                                <p class="card-text">Positive: 60.7%</p>
+                              </div>
+                            </div>
+                        <div>
+                    </div>
+                </div>
+
+            <!-- </div> -->
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
