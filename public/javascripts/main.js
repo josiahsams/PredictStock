@@ -35,7 +35,7 @@
         var c1 = this;
 
         c1.populateTable = function(indate) {
-            console.log("Initiate data retrieval " + indate);
+            // console.log("Initiate data retrieval " + indate);
             var promise = myService1.getData(indate);
             promise.then(function(response) {
                 var valueArray1 = [];
@@ -80,14 +80,7 @@
                 c1.indexes.data.push(obj);
                 c1.indexes.date = response.data[0].date;
 
-                // c1.indexes.data[1] = {'snp': valueArray2};
-                // c1.indexes.data[2] = {'snp': valueArray3};
-                // c1.indexes.data[3] = {'snp': valueArray4};
-                // c1.indexes.data[4] = {'snp': valueArray5};
-                // c1.indexes.data[5] = {'snp': valueArray6};
-                // c1.indexes.data[6] = {'snp': valueArray7};
-
-                console.log("Date: " + response.data[0].date + " : " + response.data[1].date + " : " + response.data[2].date);
+                // console.log("Date: " + response.data[0].date + " : " + response.data[1].date + " : " + response.data[2].date);
             })
             .catch(function(error) {
                 console.log("Error getCount"+error);
@@ -111,19 +104,14 @@
         }
 
         $scope.trunc = Math.trunc;
+        $scope.compare = function(val1, val2) {
+            if (val1 > val2) return true;
+            else return false;
+        }
         c1.indexes = {};
         c1.indexes.data = [];
         c1.indexes.ldate = new Date();
 
-        // c1.indexes = {'date': "2011-08-19",
-        //     'data': [{ 'snp' : [10,20,30] },
-        //         { 'nyse' : [10,20,30] },
-        //         { 'djia' : [10,20,30] },
-        //         { 'dax' : [10,20,30] },
-        //         { 'hangseng' : [10,20,30] },
-        //         { 'nikkei' : [10,20,30] },
-        //         { 'aord' : [10,20,30] }
-        //     ]};
         var options = {
             year: "numeric", month: "short",
             day: "numeric", hour: "2-digit", minute: "2-digit"
@@ -144,8 +132,6 @@
         // c1.indexes.ldate = new Date(c1.indexes.date)
         $scope.$watch('c1.indexes.ldate', function(newValue, oldValue) {
             if (oldValue != newValue) {
-                //var offsetMs = newValue.getTimezoneOffset() * 60000;
-                //newValue = new Date(newValue.getTime() + offsetMs);
                 c1.indexes.date = new Date(newValue).toLocaleDateString("en-US")
                 // console.log(c1.indexes.date);
                 var modDate = formatDate(new Date(newValue));
@@ -153,10 +139,24 @@
             }
         });
 
+        c1.tooltiptext = "Predict the price movement";
         $scope.isDisabled = false;
-        $scope.disableButton = function() {
-            $scope.isDisabled = true;
-            $scope.searchButtonText = "searching"
+        $scope.searchButtonText = "";
+
+        $scope.toggleButton = function() {
+            if($scope.searchButtonText == "") {
+                $scope.searchButtonText = "searching"
+                c1.tooltiptext = "Cancel the prediction";
+                // angular.element.find('[data-toggle="tooltip"]')[0].tooltip();
+                // angular.element.find('#date-input')[0].focus();
+                angular.element.find('[data-toggle="tooltip"]')[0].dataset.originalTitle = "Cancel the prediction";
+
+            } else {
+                $scope.searchButtonText = ""
+                c1.tooltiptext = "Predict the price movement";
+                angular.element.find('[data-toggle="tooltip"]')[0].dataset.originalTitle = "Predict the price movement";
+                // $('[data-toggle="tooltip"]').tooltip()
+            }
         }
         c1.count = {};
         c1.imagedata = {};

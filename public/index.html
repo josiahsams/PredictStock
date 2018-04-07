@@ -13,12 +13,13 @@
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
 
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="/javascripts/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 
     <!-- <script src="/javascripts/bootstrap.min.js"></script> -->
     <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
@@ -86,10 +87,16 @@
                                     {{key}}
                                     </td>
                                     <td ng-repeat="(key, value) in item">
-                                        {{trunc(value[0])}}
+
+                                        <span ng-show="compare(value[0], value[1]) == true"><i class="fas fa-arrow-alt-circle-up" style="color:green;"></i></span>
+                                        <span ng-show="compare(value[0], value[1]) == false"><i class="fas fa-arrow-alt-circle-down" style="color:red;"></i></span>
+                                         &nbsp; {{trunc(value[0])}}
                                     </td>
                                     <td ng-repeat="(key, value) in item">
-                                        {{trunc(value[1])}}
+
+                                        <span ng-show="compare(value[1], value[2]) == true"><i class="fas fa-arrow-alt-circle-up" style="color:green;"></i></span>
+                                        <span ng-show="compare(value[1], value[2]) == false"><i class="fas fa-arrow-alt-circle-down" style="color:red;"></i></span>
+                                        &nbsp; {{trunc(value[1])}}
                                     </td>
                                     <td ng-repeat="(key, value) in item">
                                         {{trunc(value[2])}}
@@ -102,29 +109,31 @@
 
                     <div class="col-xs-6 col-md-6">
                         <br>
-                        <br>
-                        <form class="form-inline">
-                          <div class="form-group">
-                            <label for="inputDate">Date</label>&nbsp;
-                            <input class="form-control" type="date" ng-model="c1.indexes.ldate" value="{{c1.indexes.ldate}}" id="example-date-input">
-                            &nbsp;
+                        <form class="form">
                             <small id="HelpInline" class="text-muted">
                               Select Market Working Date
                             </small>
-                            <br><br>
-                            <button type="button" ng-disabled="isDisabled" ng-click="disableButton()"
+                          <div class="form-group">
+                            <input class="form-control" type="date" ng-model="c1.indexes.ldate" value="{{c1.indexes.ldate}}" id="date-input">
+                            <br>
+
+                            <button type="button" ng-click="toggleButton()"  data-toggle="tooltip" data-placement="top" title="{{c1.tooltiptext}}"
                                 class="btn btn-primary btn-lg btn-block" style="height: 50px;">Predict &nbsp;
-                                <span ng-show="searchButtonText == 'searching'"><i class="fas fa-spinner"></i></span></button>
+                                <span ng-show="searchButtonText == 'searching'" >
+                                    <i class="fas fa-stop-circle"></i>
+                                </span>
+                            </button>
                           </div>
                         </form>
                         <div class="row justify-content-md-center">
-                            <div class="card " style="width: 10rem;">
+                            <div class="card " style="width: 8rem;">
                               <img class="card-img-top" src="/images/thumbsup.png" alt="Card image cap">
                               <div class="card-body">
                                 <p class="card-text">Positive: 60.7%</p>
                               </div>
-                            </div>
-                        <div>
+                          </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -134,7 +143,11 @@
 
 
 
-
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 
 </body>
 
