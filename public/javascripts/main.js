@@ -3,38 +3,19 @@
     angular.module('myApp', [])
         .controller('myCtrl1', myCtrlFn)
         .service('myService1', myServiceFn)
-        .directive('myList', myListDir);
-    //    .constant('ApiBasePath', "http://localhost:3000");
+        .constant('ApiBasePath', "http://localhost:6006");
 
-    myListDir.$inject = [];
+    myCtrlFn.$inject = ['$scope', 'myService1'];
 
-    function myListDir() {
-        var ddo = {
-            templateUrl: 'listItem.html',
-            scope: {
-                listCtrl: "=list"
-            },
-            //link: myLinkFn
-        }
-        return ddo;
-    }
-
-    function myLinkFn(scope, element, attrs, controller) {
-        scope.$watch('listCtrl.itemList', function(newValue, oldValue) {
-            console.log(newValue + " :: " + oldValue);
-
-            element.find(".dontshow").html("Hello");
-            element.find(".dontshow").slideUp(2000);
-            //element.fadeIn(5000);
-        })
-    }
-    myCtrlFn.$inject = ['$scope', '$interval', 'myService1'];
-
-
-    function myCtrlFn($scope, $interval, myService1) {
+    function myCtrlFn($scope, myService1) {
         var c1 = this;
 
+        c1.prediction = {};
+        c1.indexes = {};
+        c1.indexes.date = "";
+
         c1.populateTable = function(indate) {
+            c1.prediction.loading = "load";
             // console.log("Initiate data retrieval " + indate);
             var promise = myService1.getData(indate);
             promise.then(function(response) {
@@ -80,24 +61,39 @@
                 c1.indexes.data.push(obj);
                 c1.indexes.date = response.data[0].date;
 
+
+                var promise1 = myService1.getPrediction(response.data[0].parameters);
+                promise1.then(function(response1) {
+                    c1.prediction.label = response1.data[0].label;
+                    if (c1.prediction.label == "Positive") {
+                        c1.prediction.sign = "thumbsup.png"
+                    } else {
+                        c1.prediction.sign = "thumbsdown.png"
+                    }
+                    c1.prediction.score = Math.round(response1.data[0].score * 1000) / 10;
+                    c1.prediction.loading = "";
+                })
+                .catch(function(error) {
+                    console.log("Error getPrediction : "+error);
+                });
+
                 // console.log("Date: " + response.data[0].date + " : " + response.data[1].date + " : " + response.data[2].date);
             })
             .catch(function(error) {
-                console.log("Error getCount"+error);
+                console.log("Error getData : "+error);
             });
         };
 
         $scope.getIndex = function(caseNo) {
-            console.log("clicked");
-            c1.joe = 'jos-' + caseNo;
+            // console.log("clicked");
             switch(caseNo){
-                case 1: //c1.indexes.ldate = new Date("2012-08-19");
+                case 1:
                         c1.populateTable("2012-08-19");
                         break;
-                case 2: //c1.indexes.ldate = new Date("2008-12-11");
+                case 2:
                         c1.populateTable("2008-12-11");
                         break;
-                case 3: //c1.indexes.ldate = new Date("2000-01-25");
+                case 3:
                         c1.populateTable("2000-01-25");
                         break;
             }
@@ -111,6 +107,7 @@
         c1.indexes = {};
         c1.indexes.data = [];
         c1.indexes.ldate = new Date();
+        c1.populateTable("2017-01-20");
 
         var options = {
             year: "numeric", month: "short",
@@ -144,41 +141,52 @@
         $scope.searchButtonText = "";
 
         $scope.toggleButton = function() {
-            if($scope.searchButtonText == "") {
-                $scope.searchButtonText = "searching"
-                c1.tooltiptext = "Cancel the prediction";
-                // angular.element.find('[data-toggle="tooltip"]')[0].tooltip();
-                // angular.element.find('#date-input')[0].focus();
-                angular.element.find('[data-toggle="tooltip"]')[0].dataset.originalTitle = "Cancel the prediction";
+            var modDate = formatDate(new Date(c1.indexes.date));
+            c1.populateTable(modDate);
 
-            } else {
-                $scope.searchButtonText = ""
-                c1.tooltiptext = "Predict the price movement";
-                angular.element.find('[data-toggle="tooltip"]')[0].dataset.originalTitle = "Predict the price movement";
-                // $('[data-toggle="tooltip"]').tooltip()
-            }
+            // if($scope.searchButtonText == "") {
+            //     $scope.searchButtonText = "searching";
+            //     var modDate = formatDate(new Date(c1.indexes.date));
+            //     c1.populateTable(modDate);
+            //     c1.tooltiptext = "Cancel the prediction";
+            //     // angular.element.find('[data-toggle="tooltip"]')[0].tooltip();
+            //     // angular.element.find('#date-input')[0].focus();
+            //     angular.element.find('[data-toggle="tooltip"]')[0].dataset.originalTitle = "Cancel the prediction";
+            //
+            // } else {
+            //     $scope.searchButtonText = ""
+            //     c1.tooltiptext = "Predict the price movement";
+            //     angular.element.find('[data-toggle="tooltip"]')[0].dataset.originalTitle = "Predict the price movement";
+            //     // $('[data-toggle="tooltip"]').tooltip()
+            // }
         }
         c1.count = {};
         c1.imagedata = {};
 
     };
 
-    // myServiceFn.$inject = ['$http', 'ApiBasePath'];
-    //
-    // function myServiceFn($http, ApiBasePath) {
-
-    myServiceFn.$inject = ['$http'];
-    function myServiceFn($http) {
+    myServiceFn.$inject = ['$http', 'ApiBasePath'];
+    function myServiceFn($http, ApiBasePath) {
         var mySer = this;
         mySer.getData = function(indate) {
             var response = $http({
                 method: "GET",
                 url: "/fin/" + indate
-                //url: ApiBasePath + "/data"
             });
             return response;
         }
 
+        mySer.getPrediction = function(parameters) {
+            var response = $http({
+                method: "POST",
+                url: ApiBasePath + "/pred",
+                data: parameters,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            });
+            return response;
+        }
     }
 
 })();

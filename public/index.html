@@ -71,6 +71,7 @@
                     <div class="col-xs-6 col-md-6">
 
                         <div ng-show="c1.indexes.date != ''">
+
                             <h4><span class="badge badge-warning"> Date: {{c1.indexes.date}} </span></h4>
                             <table class="table table-striped table-hover">
                               <thead >
@@ -110,28 +111,38 @@
                     <div class="col-xs-6 col-md-6">
                         <br>
                         <form class="form">
+
                             <small id="HelpInline" class="text-muted">
                               Select Market Working Date
                             </small>
+
                           <div class="form-group">
                             <input class="form-control" type="date" ng-model="c1.indexes.ldate" value="{{c1.indexes.ldate}}" id="date-input">
                             <br>
 
-                            <button type="button" ng-click="toggleButton()"  data-toggle="tooltip" data-placement="top" title="{{c1.tooltiptext}}"
-                                class="btn btn-primary btn-lg btn-block" style="height: 50px;">Predict &nbsp;
-                                <span ng-show="searchButtonText == 'searching'" >
-                                    <i class="fas fa-stop-circle"></i>
-                                </span>
-                            </button>
+                                <button type="button" ng-click="toggleButton()"  data-toggle="tooltip" data-placement="top" title="{{c1.tooltiptext}}"
+                                    class="btn btn-primary btn-lg btn-block" style="height: 50px;">Predict &nbsp;
+                                    <span ng-show="searchButtonText == 'searching'" >
+                                        <i class="fas fa-stop-circle"></i>
+                                    </span>
+
+                                </button>
                           </div>
+                          <!-- <img src="/images/loading.gif" width="100px" alt="loading .."></img> -->
+
                         </form>
                         <div class="row justify-content-md-center">
-                            <div class="card " style="width: 8rem;">
-                              <img class="card-img-top" src="/images/thumbsup.png" alt="Card image cap">
-                              <div class="card-body">
-                                <p class="card-text">Positive: 60.7%</p>
-                              </div>
-                          </div>
+                            <span ng-if="c1.prediction.loading == 'load'">
+                                <img src="/images/loading.gif" width="100px" alt="loading .."></img>
+                            </span>
+                            <div ng-if="c1.prediction.label">
+                                <div  class="card " style="width: 8rem;">
+                                  <img class="card-img-top" ng-src="/images/{{c1.prediction.sign}}" alt="Card image cap"></img>
+                                  <div class="card-body">
+                                    <p class="card-text">{{c1.prediction.label}}: {{c1.prediction.score}}%</p>
+                                  </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
