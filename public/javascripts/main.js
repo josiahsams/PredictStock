@@ -14,6 +14,8 @@
         c1.indexes = {};
         c1.indexes.date = "";
 
+        c1.printActual = "";
+
         c1.populateTable = function(indate) {
             c1.prediction.loading = "load";
             // console.log("Initiate data retrieval " + indate);
@@ -26,6 +28,12 @@
                 var valueArray5 = [];
                 var valueArray6 = [];
                 var valueArray7 = [];
+
+                if (response.data[0].parameters.snp_log_return_negative == 1) {
+                    c1.printActual =  "Negative";
+                } else {
+                    c1.printActual =  "Positive";
+                }
 
                 for (var i = 0; i < response.data.length; i++) {
                     valueArray1.push(response.data[i].close[0].value)
@@ -80,6 +88,9 @@
                 // console.log("Date: " + response.data[0].date + " : " + response.data[1].date + " : " + response.data[2].date);
             })
             .catch(function(error) {
+                c1.prediction.loading = "";
+                c1.indexes.data = [];
+                c1.prediction = {};
                 console.log("Error getData : "+error);
             });
         };

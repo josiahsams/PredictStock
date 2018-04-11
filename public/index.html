@@ -77,9 +77,9 @@
                               <thead >
                                 <tr>
                                   <th scope="col">Index</th>
-                                  <th scope="col">1 Day Before</th>
-                                  <th scope="col">2 Days Before</th>
-                                  <th scope="col">3 Days Before</th>
+                                  <th scope="col">3 Days Back</th>
+                                  <th scope="col">2 Days Back</th>
+                                  <th scope="col">Day Before</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -88,19 +88,17 @@
                                     {{key}}
                                     </td>
                                     <td ng-repeat="(key, value) in item">
-
-                                        <span ng-show="compare(value[0], value[1]) == true"><i class="fas fa-arrow-alt-circle-up" style="color:green;"></i></span>
-                                        <span ng-show="compare(value[0], value[1]) == false"><i class="fas fa-arrow-alt-circle-down" style="color:red;"></i></span>
-                                         &nbsp; {{trunc(value[0])}}
+                                        {{trunc(value[2])}}
                                     </td>
                                     <td ng-repeat="(key, value) in item">
-
                                         <span ng-show="compare(value[1], value[2]) == true"><i class="fas fa-arrow-alt-circle-up" style="color:green;"></i></span>
                                         <span ng-show="compare(value[1], value[2]) == false"><i class="fas fa-arrow-alt-circle-down" style="color:red;"></i></span>
                                         &nbsp; {{trunc(value[1])}}
                                     </td>
                                     <td ng-repeat="(key, value) in item">
-                                        {{trunc(value[2])}}
+                                        <span ng-show="compare(value[0], value[1]) == true"><i class="fas fa-arrow-alt-circle-up" style="color:green;"></i></span>
+                                        <span ng-show="compare(value[0], value[1]) == false"><i class="fas fa-arrow-alt-circle-down" style="color:red;"></i></span>
+                                         &nbsp; {{trunc(value[0])}}
                                     </td>
                                 </tr>
                               </tbody>
@@ -131,18 +129,29 @@
                           <!-- <img src="/images/loading.gif" width="100px" alt="loading .."></img> -->
 
                         </form>
-                        <div class="row justify-content-md-center">
-                            <span ng-if="c1.prediction.loading == 'load'">
+
+                            <span ng-if="c1.prediction.loading == 'load'" class="justify-content-md-center">
                                 <img src="/images/loading.gif" width="100px" alt="loading .."></img>
                             </span>
                             <div ng-if="c1.prediction.label">
-                                <div  class="card " style="width: 8rem;">
+                            <div class="row ">
+                            <div class="col-xs-3 col-md-3">
+                                <div  class="card " style="width: 6rem;">
                                   <img class="card-img-top" ng-src="/images/{{c1.prediction.sign}}" alt="Card image cap"></img>
                                   <div class="card-body">
-                                    <p class="card-text">{{c1.prediction.label}}: {{c1.prediction.score}}%</p>
                                   </div>
                                 </div>
                             </div>
+                            <div class="col-xs-9 col-md-9">
+                                    <br>
+                                    <h5><span class="badge  badge-info">Predicted: </span> {{c1.prediction.label}}: {{c1.prediction.score}}% </h5>
+                                    <br>
+                                    <h5><span class="badge badge-success">Actual: </span> {{c1.printActual}}</h5>
+
+                            </div>
+                            </div>
+                        </div>
+
                         </div>
 
                     </div>
