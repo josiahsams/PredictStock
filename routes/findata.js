@@ -16,4 +16,16 @@ router.get('/:inputdate?', function(req, res, next) {
 
 });
 
+router.get('/cur/:inputdate?', function(req, res, next) {
+
+    var indate = req.params.inputdate;
+    // console.log("Retrieve data for " + indate);
+    FinanceData.find({date:  {$gt: indate}}).sort({date:1}).limit(1).exec(function(err, findata) {
+        if (err) throw err;
+        //console.log(findata);
+        res.json(findata);
+    });
+
+});
+
 module.exports = router;

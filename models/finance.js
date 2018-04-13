@@ -18,6 +18,21 @@ const FinanceSchema = new mongoose.Schema({
         }
 	}],
     parameters: {
+		"nifty_log_return_1" : {
+            type: Number,
+    		trim: true,
+    		required: true
+        },
+		"nifty_log_return_2" : {
+            type: Number,
+    		trim: true,
+    		required: true
+        },
+		"nifty_log_return_3" : {
+            type: Number,
+    		trim: true,
+    		required: true
+        },
         "aord_log_return_2" : {
             type: Number,
     		trim: true,
@@ -98,12 +113,12 @@ const FinanceSchema = new mongoose.Schema({
     		trim: true,
     		required: true
         },
-		"snp_log_return_positive" : {
+		"nifty_log_return_positive" : {
             type: Number,
     		trim: true,
     		required: true
         },
-		"snp_log_return_negative" : {
+		"nifty_log_return_negative" : {
             type: Number,
     		trim: true,
     		required: true

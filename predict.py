@@ -38,7 +38,10 @@ def index():
 
     with tf.Session(graph=graph) as sess:
         try:
-            inputVal = np.array([[reqContent['snp_log_return_1'],
+            inputVal = np.array([[reqContent['nifty_log_return_1'],
+                                  reqContent['nifty_log_return_2'],
+                                  reqContent['nifty_log_return_3'],
+                                  reqContent['snp_log_return_1'],
                                   reqContent['snp_log_return_2'],
                                   reqContent['snp_log_return_3'],
                                   reqContent['nyse_log_return_1'],
@@ -59,8 +62,8 @@ def index():
                                   reqContent['aord_log_return_0'],
                                   reqContent['aord_log_return_1'],
                                   reqContent['aord_log_return_2']]])
-            expectClass = np.array([[reqContent['snp_log_return_positive'],
-                                     reqContent['snp_log_return_negative']]])
+            expectClass = np.array([[reqContent['nifty_log_return_positive'],
+                                     reqContent['nifty_log_return_negative']]])
             results, pred = sess.run([output_operation.outputs[0], pred_operation.outputs[0]], {
                 input_operation.outputs[0]: inputVal,
                 class_operation.outputs[0]: expectClass

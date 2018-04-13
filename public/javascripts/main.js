@@ -28,12 +28,17 @@
                 var valueArray5 = [];
                 var valueArray6 = [];
                 var valueArray7 = [];
+                var valueArray8 = [];
 
-                if (response.data[0].parameters.snp_log_return_negative == 1) {
+                if (response.data[0].parameters.nifty_log_return_negative == 1) {
                     c1.printActual =  "Negative";
+                    c1.prediction.actualsign =  "thumbsdown.png"
                 } else {
                     c1.printActual =  "Positive";
+                    c1.prediction.actualsign =  "thumbsup.png"
                 }
+
+                c1.prediction.prev = response.data[0].close[0].value
 
                 for (var i = 0; i < response.data.length; i++) {
                     valueArray1.push(response.data[i].close[0].value)
@@ -43,6 +48,7 @@
                     valueArray5.push(response.data[i].close[4].value)
                     valueArray6.push(response.data[i].close[5].value)
                     valueArray7.push(response.data[i].close[6].value)
+                    valueArray8.push(response.data[i].close[7].value)
                 }
                 c1.indexes.data = [];
                 var obj = {};
@@ -67,8 +73,21 @@
                 obj = {};
                 obj[response.data[0].close[6].stock] = valueArray7;
                 c1.indexes.data.push(obj);
+                obj = {};
+                obj[response.data[0].close[7].stock] = valueArray8;
+                c1.indexes.data.push(obj);
                 c1.indexes.date = response.data[0].date;
 
+                var curpromise = myService1.getCurData(indate);
+                curpromise.then(function(response1) {
+                    // console.log(response1);
+                    c1.prediction.actual = response1.data[0].close[0].value;
+
+
+                })
+                .catch(function(error) {
+                    console.log("Error getCurData : "+error);
+                });
 
                 var promise1 = myService1.getPrediction(response.data[0].parameters);
                 promise1.then(function(response1) {
@@ -187,6 +206,14 @@
             return response;
         }
 
+        mySer.getCurData = function(indate) {
+            var response = $http({
+                method: "GET",
+                url: "/fin/cur/" + indate
+            });
+            return response;
+        }
+
         mySer.getPrediction = function(parameters) {
             var response = $http({
                 method: "POST",
@@ -198,6 +225,8 @@
             });
             return response;
         }
+
+
     }
 
 })();
