@@ -196,7 +196,7 @@
     };
 
     myServiceFn.$inject = ['$http', 'ApiBasePath', '$location'];
-    function myServiceFn($http, ApiBasePath) {
+    function myServiceFn($http, ApiBasePath, $location) {
         var mySer = this;
         mySer.getData = function(indate) {
             var response = $http({
