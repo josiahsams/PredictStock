@@ -23,13 +23,6 @@ closing_data = pd.DataFrame()
 path = "./data/"
 
 for filename in glob.glob(os.path.join(path, '*.csv')):
-    print(filename)
-    indx_name = filename.split('_')[1].split('.')[0].lower()
-    indx_name += '_close'
-    print(indx_name)
-    sys.stdout.flush()
-
-for filename in glob.glob(os.path.join(path, '*.csv')):
     indx_name = filename.split('_')[1].split('.')[0].lower()
     indx_name += '_close'
     df_data = pd.read_csv(filename, sep=',', header=0)
@@ -37,7 +30,11 @@ for filename in glob.glob(os.path.join(path, '*.csv')):
     df_data = df_data.set_index('Date')
     # print df_data
     df_data = df_data[~df_data['Close'].isin(['null'])]
+    print(indx_name)
+    sys.stdout.flush()
     closing_data[indx_name] = pd.to_numeric(df_data['Close'])
+    print("Completed")
+    sys.stdout.flush()
 
 closing_data = closing_data.dropna(how='any')
 closing_data.sort_index(ascending=True, inplace=True)
