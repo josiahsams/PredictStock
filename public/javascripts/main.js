@@ -3,7 +3,7 @@
     angular.module('myApp', [])
         .controller('myCtrl1', myCtrlFn)
         .service('myService1', myServiceFn)
-        .constant('ApiBasePath', "http://localhost:6006");
+        .constant('ApiBasePath', "http://FinSeriesPred:5000");
 
     myCtrlFn.$inject = ['$scope', 'myService1'];
 

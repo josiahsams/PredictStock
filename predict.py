@@ -110,4 +110,4 @@ if __name__ == '__main__':
     class_operation = graph.get_operation_by_name(class_layer)
     pred_operation = graph.get_operation_by_name(pred_layer)
 
-    app.run(host='0.0.0.0', port=6006, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

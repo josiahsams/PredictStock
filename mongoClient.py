@@ -10,9 +10,15 @@ import glob
 import datetime
 
 # connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://FinSeriesMongo:27017/")
 db = client.joetest
+rowCount = db.finance.count()
+print("rowCount is {}".format(rowCount))
 
+if (rowCount > 0):
+        print("Skip Data Insertion as Collection already has data")
+        sys.exit(0)
+        
 closing_data = pd.DataFrame()
 path = "./data/"
 
