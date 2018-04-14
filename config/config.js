@@ -1,5 +1,5 @@
 
 
 module.exports = {
-  dburl: "mongodb://FinSeriesMongo:27017/joetest"
+  dburl: "mongodb://finseriesmongo:27017/joetest"
 }
