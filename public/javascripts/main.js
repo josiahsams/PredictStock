@@ -3,7 +3,7 @@
     angular.module('myApp', [])
         .controller('myCtrl1', myCtrlFn)
         .service('myService1', myServiceFn)
-        .constant('ApiBasePath', "http://finseriespred:5000");
+        //.constant('ApiBasePath', "http://finseriespred:5000");
 
     myCtrlFn.$inject = ['$scope', 'myService1'];
 
@@ -195,7 +195,7 @@
 
     };
 
-    myServiceFn.$inject = ['$http', 'ApiBasePath'];
+    myServiceFn.$inject = ['$http', 'ApiBasePath', '$location'];
     function myServiceFn($http, ApiBasePath) {
         var mySer = this;
         mySer.getData = function(indate) {
@@ -217,7 +217,8 @@
         mySer.getPrediction = function(parameters) {
             var response = $http({
                 method: "POST",
-                url: ApiBasePath + "/pred",
+                //url: ApiBasePath + "/pred",
+                url: "http://"+$location.host()+":5000/pred"
                 data: parameters,
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
