@@ -3,7 +3,7 @@
     angular.module('myApp', [])
         .controller('myCtrl1', myCtrlFn)
         .service('myService1', myServiceFn)
-        //.constant('ApiBasePath', "http://finseriespred:5000");
+        .constant('ApiBasePath', "http://finseriespred:5000");
 
     myCtrlFn.$inject = ['$scope', 'myService1'];
 
@@ -218,7 +218,7 @@
             var response = $http({
                 method: "POST",
                 //url: ApiBasePath + "/pred",
-                url: "http://"+$location.host()+":5000/pred"
+                url: "http://"+$location.host()+":5000/pred",
                 data: parameters,
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
