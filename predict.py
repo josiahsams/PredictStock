@@ -94,7 +94,7 @@ def index():
 
 if __name__ == '__main__':
     file_name = ""
-    model_file = "/model.pb"
+    model_file = "./model.pb"
     # model_file = "/model-cpu.pb"
     input_layer = "input"
     output_layer = "model"
