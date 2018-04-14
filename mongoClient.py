@@ -27,7 +27,11 @@ for filename in glob.glob(os.path.join(path, '*.csv')):
     indx_name = filename.split('_')[1].split('.')[0].lower()
     indx_name += '_close'
     print(indx_name)
-    # print indx_name
+    sys.stdout.flush()
+
+for filename in glob.glob(os.path.join(path, '*.csv')):
+    indx_name = filename.split('_')[1].split('.')[0].lower()
+    indx_name += '_close'
     df_data = pd.read_csv(filename, sep=',', header=0)
     df_data['Date'] = pd.to_datetime(df_data['Date'])
     df_data = df_data.set_index('Date')
