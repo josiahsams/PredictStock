@@ -10,8 +10,8 @@ import glob
 import datetime
 
 # connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
-# client = MongoClient("mongodb://finseriesmongo:27017/")
+#client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://finseriesmongo:27017/")
 db = client.joetest
 rowCount = db.finance.count()
 print("rowCount is {}".format(rowCount))
