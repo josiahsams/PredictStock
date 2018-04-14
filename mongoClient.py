@@ -10,7 +10,8 @@ import glob
 import datetime
 
 # connect to MongoDB
-client = MongoClient("mongodb://finseriesmongo:27017/")
+client = MongoClient("mongodb://localhost:27017/")
+# client = MongoClient("mongodb://finseriesmongo:27017/")
 db = client.joetest
 rowCount = db.finance.count()
 print("rowCount is {}".format(rowCount))
@@ -28,13 +29,12 @@ for filename in glob.glob(os.path.join(path, '*.csv')):
     df_data = pd.read_csv(filename, sep=',', header=0)
     df_data['Date'] = pd.to_datetime(df_data['Date'])
     df_data = df_data.set_index('Date')
-    # print df_data
+    # Detect duplicate indices
+    # print(df_data[df_data.index.duplicated()])
     df_data = df_data[~df_data['Close'].isin(['null'])]
-    print(indx_name)
-    sys.stdout.flush()
+    # print(indx_name)
+    # sys.stdout.flush()
     closing_data[indx_name] = pd.to_numeric(df_data['Close'])
-    print("Completed")
-    sys.stdout.flush()
 
 closing_data = closing_data.dropna(how='any')
 closing_data.sort_index(ascending=True, inplace=True)
