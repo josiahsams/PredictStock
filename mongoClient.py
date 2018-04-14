@@ -23,9 +23,10 @@ closing_data = pd.DataFrame()
 path = "./data/"
 
 for filename in glob.glob(os.path.join(path, '*.csv')):
-    # print filename
+    print(filename)
     indx_name = filename.split('_')[1].split('.')[0].lower()
     indx_name += '_close'
+    print(indx_name)
     # print indx_name
     df_data = pd.read_csv(filename, sep=',', header=0)
     df_data['Date'] = pd.to_datetime(df_data['Date'])
