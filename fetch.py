@@ -86,13 +86,17 @@ param = [{'q': 'NIFTY', 'i': "86400", 'x': "NSE"},
 
 dg = gf.get_prices_data(param, str(months) + "M")
 
-# print("Date\t\tNIFTY\t\tDJX\t\tSP500\t\tAORD\t\tNYSE\t\tDAX\t\tHANGSENG\t\tNIKKEI ")
+print("Date\t\tNIFTY\t\tDJX\t\tSP500\t\tAORD\t\tNYSE\t\tDAX\t\tHANGSENG\t\tNIKKEI")
 
-dg['NIFTY_Close'] = dg['NIFTY_Close'].shift()
-dg['XAO_Close'] = dg['XAO_Close'].shift()
-dg['DAX_Close'] = dg['DAX_Close'].shift()
-dg['HSI_Close'] = dg['HSI_Close'].shift()
-dg['NI225_Close'] = dg['NI225_Close'].shift()
+dg['NYA_Close'] = dg['NYA_Close'].shift(-1)
+dg['.INX_Close'] = dg['.INX_Close'].shift(-1)
+dg['.DJI_Close'] = dg['.DJI_Close'].shift(-1)
+
+# dg['NIFTY_Close'] = dg['NIFTY_Close'].shift()
+# dg['XAO_Close'] = dg['XAO_Close'].shift()
+# dg['DAX_Close'] = dg['DAX_Close'].shift()
+# dg['HSI_Close'] = dg['HSI_Close'].shift()
+# dg['NI225_Close'] = dg['NI225_Close'].shift()
 
 for index, row in dg.iterrows():
     if index > datetime.date(ldate):
@@ -126,7 +130,6 @@ closing_data = closing_data.dropna(how='any')
 closing_data.sort_index(ascending=True, inplace=True)
 
 # print(closing_data)
-
 
 log_return_data = pd.DataFrame()
 
@@ -222,13 +225,12 @@ for i in range(3, len(log_return_data)):
          'aord_log_return_2': aord_log_return_2},
         ignore_index=True)
 
-
 training_test_data = training_test_data.set_index('Date')
 closing_data = pd.merge(training_test_data, closing_data,
                         left_index=True, right_index=True, how='outer')
 closing_data = closing_data.dropna(how='any')
 
-print(closing_data)
+# print(closing_data)
 
 for index, row in closing_data.iterrows():
     db.finance.insert({'date': index, 'close': [{'stock': 'nifty', 'value': row['nifty_close']},

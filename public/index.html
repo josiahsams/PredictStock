@@ -150,15 +150,16 @@
                                                 <h5><span class="badge  badge-info">Predicted: </span> </td><td><b>{{c1.prediction.label}}: {{c1.prediction.score}}% </b></td>
                                                     <td >
                                                         <img  width="50px" ng-src="/images/{{c1.prediction.sign}}" alt="Card image cap"></img>
-                                        <tr height="80px">
+                                        <tr height="80px" ng-if="c1.prediction.actual != 0.0">
                                         <td style="text-align: center; padding-top:10px;">
                                             <h5><span class="badge badge-success">Actual: </span> <td>{{c1.printActual}}
                                                 <span ng-show="compare(c1.prediction.actual, c1.prediction.prev) == true"><i class="fas fa-arrow-alt-circle-up" style="color:green;"></i></span>
                                                 <span ng-show="compare(c1.prediction.actual, c1.prediction.prev) == false"><i class="fas fa-arrow-alt-circle-down" style="color:red;"></i></span>
-                                                {{trunc(c1.prediction.actual)}}
+                                                {{trunc(c1.prediction.actual)}} ( {{c1.prediction.actualDate}} )
                                             </h5>
                                             <td>
                                                 <img width="50px" ng-src="/images/{{c1.prediction.actualsign}}" alt="Card image cap"></img>
+
                                         <tr>
 
                                      </table>

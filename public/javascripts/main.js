@@ -82,10 +82,11 @@
                 curpromise.then(function(response1) {
                     // console.log(response1);
                     c1.prediction.actual = response1.data[0].close[0].value;
-
-
+                    c1.prediction.actualDate = response1.data[0].date;
                 })
                 .catch(function(error) {
+                    c1.prediction.actual = 0.0;
+                    c1.prediction.actualDate = "";
                     console.log("Error getCurData : "+error);
                 });
 
